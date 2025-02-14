@@ -1,0 +1,33 @@
+# ⛔ Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ⛔ Virtual environments
+venv/
+env/
+.venv/
+
+# ⛔ Build & distribution files (generados por setuptools)
+build/
+dist/
+*.egg-info/
+
+# ⛔ Logs y archivos temporales
+*.log
+*.tmp
+
+# ⛔ Configuración de IDEs y editores de código
+.vscode/
+.idea/
+*.sublime-workspace
+
+# ⛔ Archivos de configuración de sistema operativo
+.DS_Store
+Thumbs.db
+
+# ⛔ Configuración de Git y dependencias de PyPI
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
