@@ -8,12 +8,12 @@ import os
 load_dotenv()
 
 class TransmorphAI:
-    def __init__(self, schema, api_key, model="gpt-3.5-turbo-16k"):
+    def __init__(self, schema, api_key, model="gpt-4"):
         """
-        Initializes TransmorphAI with a target data schema, an OpenAI API Key, and an optional model selection.
+        Initializes TransmorphAI with a target schema, OpenAI API Key, and an optional model selection.
         :param schema: Dictionary defining the expected final format.
         :param api_key: OpenAI API Key provided by the user.
-        :param model: OpenAI model to use (default: gpt-3.5-turbo-16k).
+        :param model: OpenAI model to use (default: gpt-4).
         """
         self.schema = schema
         self.api_key = api_key
@@ -23,6 +23,7 @@ class TransmorphAI:
     def parse_input(self, data):
         """
         Converts the input into a Python dictionary, regardless of its format.
+        Supports JSON, XML, and plain text.
         """
         if isinstance(data, str):
             try:
@@ -38,34 +39,37 @@ class TransmorphAI:
     def format_data(self, data):
         """
         Formats the received data according to the defined schema.
+        It will:
+        - Detect the input language.
+        - Map the received fields to the expected schema.
+        - Convert data types as needed.
+        - Ensure the correct output format.
         """
         parsed_data = self.parse_input(data)
-        
-        prompt = (
-            f"""
-            You are an AI data transformer for APIs.
-            
-            1. Receive input in any format (JSON, XML, plain text) and convert it into structured JSON.
-            2. Validate the data against the defined schema, ensuring all required fields are present.
-            3. Maintain the correct data types: numbers as integers or floats, text as strings, and lists as arrays.
-            4. Do not add any additional data or interpret beyond strict conversion.
-            5. If required fields are missing, return an error with the list of missing fields.
-            6. Detect the input language and keep the output format intact.
-            7. Return only valid JSON output with no additional text.
 
-            ### Expected Schema:
-            {self.schema}
+        prompt = f"""
+        You are an AI specializing in API data transformation.
 
-            ### Input Data:
-            {parsed_data}
-            """
-        )
-        
+        1️⃣ **Understand the data received**, even if it's in a different language or format.
+        2️⃣ **Translate field names** to match the expected schema.
+        3️⃣ **Correct data types** (e.g., convert strings to numbers if necessary).
+        4️⃣ **Ensure output matches the required schema**.
+
+        ### **Expected Schema:**
+        {self.schema}
+
+        ### **Received Data:**
+        {parsed_data}
+
+        🔹 **Your task:** Convert the received data to strictly match the expected schema, ensuring all required fields are present. If any field is missing, infer it based on the input.
+        🔹 **Output only a valid JSON object following the schema.**
+        """
+
         try:
             response = openai.ChatCompletion.create(
-                model=self.model,  # Use the selected model
+                model=self.model,
                 messages=[
-                    {"role": "system", "content": "You are an API data validator and formatter. Only return properly structured JSON."},
+                    {"role": "system", "content": "You are an advanced API data formatter. Always return structured JSON."},
                     {"role": "user", "content": prompt}
                 ]
             )
@@ -78,27 +82,3 @@ class TransmorphAI:
             return {"error": f"OpenAI API error: {str(e)}"}
         except Exception as e:
             return {"error": str(e)}
-
-# Example usage
-def example():
-    schema = {
-        "name": "string",
-        "age": "integer",
-        "email": "string"
-    }
-    
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        print("Error: You must provide an OpenAI API Key.")
-        return
-    
-    # User can choose a different model, or it defaults to gpt-3.5-turbo-16k
-    transmorph = TransmorphAI(schema, api_key, model="gpt-4")
-    
-    input_data = "<user><name>John</name><age>30</age><email>john@example.com</email></user>"
-    
-    result = transmorph.format_data(input_data)
-    print(result)
-
-if __name__ == "__main__":
-    example()

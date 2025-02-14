@@ -1,18 +1,27 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: transmorphai
 Version: 0.1.0
 Summary: A Python library for AI-powered API data transformation.
 Home-page: https://github.com/gimenomarc/TransmorphAI
 Author: Marc Gimeno
-Author-email: gimenocervantesmarc@gmail.com
-License: UNKNOWN
-Platform: UNKNOWN
+Author-email: your-email@example.com
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: openai
+Requires-Dist: python-dotenv
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
 
 # 🚀 TransmorphAI - AI-Powered Data Transformation for APIs  
 
@@ -127,6 +136,4 @@ pip install -e .
 
 ## 📞 Contact  
 For questions or suggestions, feel free to reach out on [GitHub](https://github.com/gimenomarc)! 🚀  
-
-
 

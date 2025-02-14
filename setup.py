@@ -4,7 +4,7 @@ setup(
     name="transmorphai",  
     version="0.1.0",
     author="Marc Gimeno",
-    author_email="",
+    author_email="your-email@example.com",
     description="A Python library for AI-powered API data transformation.",
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
